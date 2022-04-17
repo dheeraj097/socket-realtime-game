@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
+    <title>Dice Game</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,600" rel="stylesheet" type="text/css">
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css">
+    <link type="text/css" rel="stylesheet" href="app.css">
+    <style>
+        #initialScreen {
+            display: block;
+        }
+
+        #afterJoiningScreen {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper clearfix">
+
+        <div id="initialScreen" style="text-align: center;">
+            <br>
+            <button type="submit" class="btn btn-success" id="newRoomButton">
+                Create New Room
+            </button>
+            <br><br>
+            <div>
+                <h2>OR</h2>
+                <div class="form-group">
+                    <input type="text" placeholder="Enter Room Code" id="roomCodeInput" />
+                </div>
+            </div>
+            <br><br>
+            <button type="submit" class="btn btn-success" id="joinRoomButton">
+                Join Room
+            </button>
+            <br>
+        </div>
+        <div id="afterJoiningScreen">
+            <div class="wrapper clearfix">
+                <div style="text-align: center; font-size: 25px;">
+                    Room Code: <span id="roomCodeOutput"></span>
+                </div>
+                <div class="player-1-panel active">
+                    <div class="player-name" id="name-1">Player 1</div>
+                    <div class="player-score" id="score-1">43</div>
+                    <div class="player-current-box">
+                        <div class="player-current-label">Current</div>
+                        <div class="player-current-score" id="current-1">11</div>
+                    </div>
+                </div>
+
+                <div class="player-2-panel">
+                    <div class="player-name" id="name-2">Player 2</div>
+                    <div class="player-score" id="score-2">72</div>
+                    <div class="player-current-box">
+                        <div class="player-current-label">Current</div>
+                        <div class="player-current-score" id="current-2">0</div>
+                    </div>
+                </div>
+
+                <button class="btn-new"><i class="ion-ios-plus-outline"></i>New game</button>
+                <button class="btn-roll" style="display: none;"><i class="ion-ios-loop"></i>Roll dice</button>
+                <button class="btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
+
+                <img src="/images/dice-5.png" alt="Dice" class="dice">
+            </div>
+        </div>
+
+    </div> <!-- end container -->
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+
+</html>
