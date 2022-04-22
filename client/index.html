@@ -22,29 +22,31 @@
 </head>
 
 <body id="particles-js">
-    <div class="wrapper clearfix">
-        <div id="initialScreen" style="text-align: center;">
-            <br>
-            <button type="submit" class="btn btn-success" id="newRoomButton">
-                Create New Room
-            </button>
-            <br><br>
-            <div>
-                <h2>OR</h2>
-                <div class="form-group">
-                    <input type="text" placeholder="Enter Room Code" id="roomCodeInput" />
-                </div>
+    <div id="initialScreen" style="text-align: center;">
+        <br>
+        <button type="submit" class="btn btn-success" id="newRoomButton">
+            Create New Room
+        </button>
+        <br><br>
+        <div>
+            <h2>OR</h2>
+            <div class="form-group">
+                <input type="text" placeholder="Enter Room Code" id="roomCodeInput" />
             </div>
-            <br><br>
-            <button type="submit" class="btn btn-success" id="joinRoomButton">
-                Join Room
-            </button>
-            <br>
         </div>
+        <br><br>
+        <button type="submit" class="btn btn-success" id="joinRoomButton">
+            Join Room
+        </button>
+        <br>
+    </div>
+    <div class="wrapper clearfix">
         <div id="afterJoiningScreen">
             <div class="wrapper clearfix">
                 <div style="text-align: center; font-size: 25px;">
                     Room Code: <span id="roomCodeOutput"></span>
+                    <br>
+                    <span id="waitingForPlayerTwo">Waiting for player 2</span>
                 </div>
                 <div class="player-1-panel active">
                     <div class="player-name" id="name-1">Player 1</div>
@@ -64,9 +66,9 @@
                     </div>
                 </div>
 
-                <button class="btn-new"><i class="ion-ios-plus-outline"></i>New game</button>
+                <button class="btn-new" style="display: none;"><i class="ion-ios-plus-outline"></i>New game</button>
                 <button class="btn-roll" style="display: none;"><i class="ion-ios-loop"></i>Roll dice</button>
-                <button class="btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
+                <button class="btn-hold" style="display: none;"><i class="ion-ios-download-outline"></i>Hold</button>
 
                 <img src="/images/dice-5.png" alt="Dice" class="dice">
             </div>
@@ -75,11 +77,11 @@
     </div> <!-- end container -->
 
     <script src="/socket.io/socket.io.js"></script>
-    <script src="./assets/js/app.js"></script>
-    <script src="./assets/js/particles.min.js"></script>
+    <script src="/assets/js/app.js"></script>
+    <script src="/assets/js/particles.min.js"></script>
     <script>
         /* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-        particlesJS.load('particles-js', './assets/js/particles.json', function() {
+        particlesJS.load('particles-js', './assets/js/particles.json', function () {
             console.log('callback - particles.js config loaded');
         });
     </script>

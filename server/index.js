@@ -81,7 +81,7 @@ io.on('connection', (sock) => {
 			roomState[roomName].roundScore = 0;
 
 			if(roomState[roomName].score1 >= 100 || roomState[roomName].score2 >= 100){
-				io.sockets.in(roomName).emit('gameFinished', activePlayer);
+				io.sockets.in(roomName).emit('gameFinished', activePlayer, roomState[roomName]);
 			}else{
 				roomState[roomName].activePlayer = activePlayer === 1 ? 2 : 1;
 				io.sockets.in(roomName).emit('holdAndNextPlayer', activePlayer,roomState[roomName]);

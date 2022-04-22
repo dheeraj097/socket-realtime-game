@@ -7,6 +7,7 @@ const newRoomBtn = document.getElementById("newRoomButton");
 const joinRoomBtn = document.getElementById("joinRoomButton");
 const roomCode = document.getElementById("roomCodeInput");
 const roomCodeOutput = document.getElementById("roomCodeOutput");
+const waitingForPlayerTwo = document.getElementById("waitingForPlayerTwo");
 
 var activePlayer;
 
@@ -45,8 +46,16 @@ sock.on('init', (number, roomState, roomName) => {
 	resetBoard()
 });
 
+// this will be fired when 2nd player joins the room
 sock.on('startGame', () => {
+
+	// show the buttons
+	document.querySelector('.btn-new').style.display = 'block';
 	document.querySelector('.btn-roll').style.display = 'block';
+	document.querySelector('.btn-hold').style.display = 'block';
+
+	// hide the waiting message
+	waitingForPlayerTwo.style.display = "none";
 });
 
 document.querySelector('.btn-roll').addEventListener('click', function () {
@@ -102,7 +111,14 @@ sock.on('holdAndNextPlayer', (activePlayer, roomState) => {
 	document.querySelector('.dice').style.display = 'none';
 });
 
-sock.on('gameFinished', (activePlayer) => {
+sock.on('gameFinished', (activePlayer, roomState) => {
+
+	if(activePlayer == 1){
+		document.querySelector('#score-' + activePlayer).textContent = roomState.score1;
+	}else{
+		document.querySelector('#score-' + activePlayer).textContent = roomState.score2;
+	}
+
 	document.querySelector('#name-' + activePlayer).textContent='winner!!';
 	document.querySelector('.dice').style.display='none';
 	document.querySelector('.btn-roll').style.display = 'none';
