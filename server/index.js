@@ -22,14 +22,15 @@ io.on('connection', (sock) => {
 	// handle socket events
 
 	sock.on('newRoom', handleNewRoom);
-	function handleNewRoom() {
+	function handleNewRoom(scoreToWin, userName) {
 		let roomName = makeRoomId(5); // make room code of 5 characters
 		clientRooms[sock.id] = roomName;
 
-		console.log(clientRooms);
-
 		sock.emit('roomCode', roomName);
 		roomState[roomName] = initRoom();
+
+		roomState[roomName].name1 = userName;
+		roomState[roomName].scoreToWin = scoreToWin;
 
 		console.log(roomState[roomName])
 
@@ -39,11 +40,13 @@ io.on('connection', (sock) => {
 	}
 
 	sock.on('joinRoom', handleJoinRoom);
-	function handleJoinRoom(roomName) {
+	function handleJoinRoom(roomName, userName) {
 		console.log(roomName);
 		
 		sock.join(roomName);
 		sock.number = 2;
+
+		roomState[roomName].name2 = userName;
 		sock.emit('init', 2, roomState[roomName], roomName);
 
 		io.sockets.in(roomName).emit('startGame'); // enable the dice roll button
@@ -72,6 +75,7 @@ io.on('connection', (sock) => {
 
 	sock.on('hold', handleHold);
 	function handleHold(activePlayer, roomName){
+		const scoreToWin = roomState[roomName].scoreToWin;
 		if(activePlayer == roomState[roomName].activePlayer){
 			if(activePlayer == 1){
 				roomState[roomName].score1 += roomState[roomName].roundScore;
@@ -80,7 +84,7 @@ io.on('connection', (sock) => {
 			}
 			roomState[roomName].roundScore = 0;
 
-			if(roomState[roomName].score1 >= 100 || roomState[roomName].score2 >= 100){
+			if(roomState[roomName].score1 >= scoreToWin || roomState[roomName].score2 >= scoreToWin){
 				io.sockets.in(roomName).emit('gameFinished', activePlayer, roomState[roomName]);
 			}else{
 				roomState[roomName].activePlayer = activePlayer === 1 ? 2 : 1;
