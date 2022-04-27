@@ -3,6 +3,8 @@ const sock = io();
 
 const initialScreen = document.getElementById("initialScreen");
 const afterJoiningScreen = document.getElementById("afterJoiningScreen");
+const scoreToWin = document.getElementById("scoreToWin");
+const userName = document.getElementById("userName");
 const newRoomBtn = document.getElementById("newRoomButton");
 const joinRoomBtn = document.getElementById("joinRoomButton");
 const roomCode = document.getElementById("roomCodeInput");
@@ -15,12 +17,20 @@ newRoomBtn.addEventListener('click', newRoom);
 joinRoomBtn.addEventListener('click', joinRoom);
 
 function newRoom() {
-	sock.emit('newRoom');
+	if(scoreToWin.value != "" && userName.value != ""){
+		sock.emit('newRoom', scoreToWin.value, userName.value);
+	}else{
+		alert("Score to win and name are required");
+	}
 }
 
 function joinRoom() {
 	const code = roomCode.value;
-	sock.emit('joinRoom', code);
+	if(userName.value != ""){
+		sock.emit('joinRoom', code, userName.value);
+	}else{
+		alert("Name is required");
+	}
 }
 
 sock.on('newConnection', (text) => {
@@ -43,7 +53,7 @@ sock.on('init', (number, roomState, roomName) => {
 	roundScore = roomState.roundScore;
 	activePlayer = number;
 	console.log(activePlayer)
-	resetBoard()
+	resetBoard(roomState)
 });
 
 // this will be fired when 2nd player joins the room
@@ -135,14 +145,14 @@ sock.on('newGameStarted', (activePlayer) => {
 	document.querySelector('.btn-roll').style.display = 'block';
 });
 
-function resetBoard(){
+function resetBoard(roomState){
 	document.querySelector('.dice').style.display = 'none'; //hides dice on startUp
 	document.getElementById('score-1').textContent = '0';
 	document.getElementById('current-1').textContent = '0';
 	document.getElementById('score-2').textContent = '0';
 	document.getElementById('current-2').textContent = '0';
-	document.getElementById('name-1').textContent = 'player 1';
-	document.getElementById('name-2').textContent = 'player 2';
+	document.getElementById('name-1').textContent = roomState.name1 != "" ? roomState.name1 : "Player 2";
+	document.getElementById('name-2').textContent = roomState.name2 != "" ? roomState.name2 : "Player 2";
 	document.querySelector('.player-1-panel').classList.remove('winner');
 	document.querySelector('.player-2-panel').classList.remove('winner');
 	document.querySelector('.player-1-panel').classList.remove('active');
